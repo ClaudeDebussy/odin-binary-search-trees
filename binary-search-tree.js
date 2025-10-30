@@ -29,6 +29,18 @@ export class Tree {
     return preparedArray;
   }
 
+  insert(value, root = this.root) {
+    if (root === null) {return new Node(value)}
+    if (value === root.data) {return root}    
+    if (value < root.data) {
+      root.left = this.insert(value, root.left)
+    }
+    else {
+      root.right = this.insert(value, root.right)
+    }
+    return root;
+  }
+
   print(node = this.root, prefix = '', isLeft = true) {
     if (node === null) {
       return;
@@ -45,4 +57,5 @@ export class Tree {
 
 let tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 
+tree.insert(1);
 tree.print();
