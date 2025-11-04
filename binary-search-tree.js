@@ -100,6 +100,7 @@ export class Tree {
   }
 
   inOrderForEach(callback) {
+    if (!callback) {throw new Error("Callback required.");}
     this.#inOrderForEachHelper(callback, this.root)
   }
 
@@ -108,7 +109,30 @@ export class Tree {
     this.#inOrderForEachHelper(callback, root.left)
     callback(root)
     this.#inOrderForEachHelper(callback, root.right)
-    return root
+  }
+
+  preOrderForEach(callback) {
+    if (!callback) {throw new Error("Callback required.");}
+    this.#preOrderForEachHelper(callback, this.root)
+  }
+
+  #preOrderForEachHelper(callback, root) {
+    if (!root) {return}
+    callback(root)
+    this.#preOrderForEachHelper(callback, root.left)
+    this.#preOrderForEachHelper(callback, root.right)
+  }
+
+  postOrderForEach(callback) {
+    if (!callback) {throw new Error("Callback required.");}
+    this.#postOrderForEachHelper(callback, this.root)
+  }
+
+  #postOrderForEachHelper(callback, root) {
+    if (!root) {return}
+    this.#postOrderForEachHelper(callback, root.left)
+    this.#postOrderForEachHelper(callback, root.right)
+    callback(root)
   }
 
   findMin(root) {
@@ -150,4 +174,4 @@ let tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 tree.print();
 console.log(tree.find(222))
 
-tree.inOrderForEach((node) => console.log(node.data))
+tree.preOrderForEach((node) => console.log(node.data))
