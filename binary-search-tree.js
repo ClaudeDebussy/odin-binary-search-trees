@@ -99,6 +99,18 @@ export class Tree {
     this.#levelOrderForEachRecursiveHelper(callback, queue, index + 1)
   }
 
+  inOrderForEach(callback) {
+    this.#inOrderForEachHelper(callback, this.root)
+  }
+
+  #inOrderForEachHelper(callback, root) {
+    if (!root) {return}
+    this.#inOrderForEachHelper(callback, root.left)
+    callback(root)
+    this.#inOrderForEachHelper(callback, root.right)
+    return root
+  }
+
   findMin(root) {
     if (root === null) {return root}
     if (root.left) {root = this.findMin(root.left)}
@@ -138,4 +150,4 @@ let tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 tree.print();
 console.log(tree.find(222))
 
-tree.levelOrderForEachIterative((node) => console.log(node.data))
+tree.inOrderForEach((node) => console.log(node.data))
