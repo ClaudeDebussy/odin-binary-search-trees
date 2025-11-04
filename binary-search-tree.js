@@ -1,28 +1,28 @@
 export class Node {
   constructor(data, left = null, right = null){
-    this.data = data;
-    this.left = left;
-    this.right = right;
+    this.data = data
+    this.left = left
+    this.right = right
   }
 }
 
 export class Tree {
   constructor(array) {
-    this.array = this.#prepareArray(array);
-    this.root = this.#buildTree(this.array);
+    this.array = this.#prepareArray(array)
+    this.root = this.#buildTree(this.array)
   }
 
   #prepareArray(array) {
-    let sortedArray = array.sort((a,b) => a - b);
-    let preparedArray = [...new Set(sortedArray)]; //remove duplicates
-    return preparedArray;
+    let sortedArray = array.sort((a,b) => a - b)
+    let preparedArray = [...new Set(sortedArray)] //remove duplicates
+    return preparedArray
   }
 
   #buildTree(array) {
-    if (array.length <= 0) {return null};
-    let mid = Math.floor(array.length / 2);
-    let left = array.slice(0, mid);
-    let right = array.slice(mid + 1);
+    if (array.length <= 0) {return null}
+    let mid = Math.floor(array.length / 2)
+    let left = array.slice(0, mid)
+    let right = array.slice(mid + 1)
     
     let root = new Node(array[mid], this.#buildTree(left), this.#buildTree(right)) ;
 
@@ -67,9 +67,22 @@ export class Tree {
   }
 
   findMin(root) {
-    if (root === null) {return root};
+    if (root === null) {return root}
     if (root.left) {root = this.findMin(root.left)}
     else if (root.right) {root = this.findMin(root.right)}
+    return root
+  }
+
+  find(value) {
+    return this.#findHelper(value, this.root)
+  }
+  
+  #findHelper(value, root) {
+    if (!root) {return null}
+    if (value < root.data) {root = this.#findHelper(value, root.left)}
+    else if (value > root.data) {root = this.#findHelper(value, root.right)}
+    else if (value === root.data){return root}
+    else {return null}
     return root;
   }
 
@@ -84,14 +97,10 @@ export class Tree {
     if (node.left !== null) {
       this.print(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
     }
-  };
+  }
 }
 
 let tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 
-tree.insert(1);
 tree.print();
-tree.delete(5);
-tree.print();
-tree.delete(4);
-tree.print();
+console.log(tree.find(222))
