@@ -29,40 +29,38 @@ export class Tree {
     return root;    
   }  
 
-  insert(value, root = this.root) {
+  insert(value) {
+    this.#insertHelper(value, this.root)
+  }
+
+  #insertHelper(value, root) {
     if (root === null) {return new Node(value)}
     if (value === root.data) {return root}    
     if (value < root.data) {
-      root.left = this.insert(value, root.left)
+      root.left = this.#insertHelper(value, root.left)
     }
     else {
-      root.right = this.insert(value, root.right)
+      root.right = this.#insertHelper(value, root.right)
     }
     return root;
   }
 
-  delete(value, root = this.root) {
-    if (root === null) {return root}
-    if (value < root.data) {root.left = this.delete(value, root.left);} 
-    else if (value > root.data) {root.right = this.delete(value, root.right);} 
-    else {
-      //If has no children
-      if (root.left === null && root.right === null) {
-        return null;
-      }
-      //If has one child
-      else if (root.left === null) {
-        return root.right;
-      }
-      else if (root.right === null) {
-        return root.left;
-      }
+  delete(value) {
+    this.root = this.#deleteHelper(value, this.root)
+  } 
 
-      //If has 2 children
-      else if (root.right != null && root.left != null){
-        const temp = this.findMin(root.right);
-        root.data = temp.data;
-        root.right = this.delete(temp.data, root.right)
+  #deleteHelper(value, root) {
+    if (!root) {return root}
+    if (value < root.data) {root.left = this.#deleteHelper(value, root.left)}
+    else if (value > root.data) {root.right = this.#deleteHelper(value, root.right)}
+    else {
+      if (!root.left && !root.right) {return null}
+      else if (root.left && !root.right) {return root.left}
+      else if (root.right && !root.left) {return root.right}
+      else {
+        const temp = this.findMin(root.right)
+        root.data = temp.data
+        root.right = this.#deleteHelper(temp.data, root.right)
       }
     }
     return root;
@@ -74,8 +72,6 @@ export class Tree {
     else if (root.right) {root = this.findMin(root.right)}
     return root;
   }
-
-  
 
   print(node = this.root, prefix = '', isLeft = true) {
     if (node === null) {
