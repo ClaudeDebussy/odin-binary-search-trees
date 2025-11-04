@@ -66,6 +66,39 @@ export class Tree {
     return root;
   }
 
+  levelOrderForEachIterative(callback) {
+    if (!callback) {throw new Error("Callback required but none given.");}
+    if (!this.root) {return}
+
+    let queue = [this.root]
+    let head = 0
+
+    while (head < queue.length) {
+      const node = queue[head++]
+      callback(node)
+      if (node.left) {queue.push(node.left)}
+      if (node.right) {queue.push(node.right)}
+    }    
+  }
+
+  levelOrderForEachRecursive(callback) {
+    if (!callback) {throw new Error("Callback required.");}
+    if (!this.root) {throw new Error ("No root found.")}
+    else {this.#levelOrderForEachRecursiveHelper(callback, queue = [this.root], 0)}
+  }
+
+  #levelOrderForEachRecursiveHelper(callback, queue, index) {
+    if (index >= queue.length) {return}
+
+    const node = queue[index]    
+    callback(node)
+
+    if (node.left) {queue.push(node.left)}
+    if (node.right) {queue.push(node.right)}
+
+    this.#levelOrderForEachRecursiveHelper(callback, queue, index + 1)
+  }
+
   findMin(root) {
     if (root === null) {return root}
     if (root.left) {root = this.findMin(root.left)}
@@ -104,3 +137,5 @@ let tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 
 tree.print();
 console.log(tree.find(222))
+
+tree.levelOrderForEachIterative((node) => console.log(node.data))
