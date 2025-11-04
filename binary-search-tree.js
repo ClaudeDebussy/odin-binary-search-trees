@@ -135,6 +135,19 @@ export class Tree {
     callback(root)
   }
 
+  height(value) {
+    const root = this.find(value)
+    if (root) {return this.#heightHelper(root)}
+    else {return null}
+  }
+
+  #heightHelper(root) {
+    if (!root) {return -1}
+    let heightLeft = this.#heightHelper(root.left)
+    let heightRight = this.#heightHelper(root.right)
+    return 1 + Math.max(heightLeft, heightRight)
+  }
+
   findMin(root) {
     if (root === null) {return root}
     if (root.left) {root = this.findMin(root.left)}
@@ -172,6 +185,5 @@ export class Tree {
 let tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 
 tree.print();
-console.log(tree.find(222))
-
-tree.preOrderForEach((node) => console.log(node.data))
+// tree.preOrderForEach((node) => console.log(node.data))
+console.log(tree.height(1));
