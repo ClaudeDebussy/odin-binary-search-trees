@@ -84,7 +84,7 @@ export class Tree {
   levelOrderForEachRecursive(callback) {
     if (!callback) {throw new Error("Callback required.");}
     if (!this.root) {throw new Error ("No root found.")}
-    else {this.#levelOrderForEachRecursiveHelper(callback, queue = [this.root], 0)}
+    else {this.#levelOrderForEachRecursiveHelper(callback, [this.root], 0)}
   }
 
   #levelOrderForEachRecursiveHelper(callback, queue, index) {
@@ -221,14 +221,15 @@ export class Tree {
   }
 }
 
-let tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
+function createArrayOfRandomNumbers(length) {
+  let arr = []
+  for (let i = 0; i < length; i++) {
+    let randomNumber = Math.floor(Math.random() * (100)) + 1;
+    arr.push(randomNumber)
+  }
+  return arr
+}
 
-
-// tree.preOrderForEach((node) => console.log(node.data))
-tree.insert(0.5)
-tree.insert(0.3)
-tree.insert(0.1)
-tree.print();
-console.log(tree.isBalanced());
-tree.rebalance();
+let array = createArrayOfRandomNumbers(99)
+let tree = new Tree(array);
 tree.print();
