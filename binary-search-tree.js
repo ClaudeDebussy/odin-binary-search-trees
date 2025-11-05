@@ -180,6 +180,13 @@ export class Tree {
     return leftIsBalanced && rightIsBalanced
   }
 
+  rebalance() {
+    if (this.isBalanced()) {return}
+    let array = [];
+    this.inOrderForEach((node) => {array.push(node.data)})
+    this.root = this.#buildTree(array)
+  }
+
   findMin(root) {
     if (root === null) {return root}
     if (root.left) {root = this.findMin(root.left)}
@@ -223,3 +230,5 @@ tree.insert(0.3)
 tree.insert(0.1)
 tree.print();
 console.log(tree.isBalanced());
+tree.rebalance();
+tree.print();
