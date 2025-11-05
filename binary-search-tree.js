@@ -165,6 +165,21 @@ export class Tree {
     return 1 + Math.max(depthLeft, depthRight)
   }
 
+  isBalanced() {
+    if (!this.root) {throw new Error("Tree has no root.")}
+    return this.#isBalancedHelper(this.root)
+  }
+
+  #isBalancedHelper(root) {
+    if (!root) {return true}
+    let leftHeight = root.left ? this.height(root.left.data) : -1
+    let rightHeight = root.right ? this.height(root.right.data) : -1
+    if (Math.abs(leftHeight - rightHeight) > 1) {return false}
+    let leftIsBalanced = this.#isBalancedHelper(root.left)
+    let rightIsBalanced = this.#isBalancedHelper(root.right)
+    return leftIsBalanced && rightIsBalanced
+  }
+
   findMin(root) {
     if (root === null) {return root}
     if (root.left) {root = this.findMin(root.left)}
@@ -201,6 +216,10 @@ export class Tree {
 
 let tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 
-tree.print();
+
 // tree.preOrderForEach((node) => console.log(node.data))
-console.log(tree.depth(1));
+tree.insert(0.5)
+tree.insert(0.3)
+tree.insert(0.1)
+tree.print();
+console.log(tree.isBalanced());
