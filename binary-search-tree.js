@@ -148,6 +148,23 @@ export class Tree {
     return 1 + Math.max(heightLeft, heightRight)
   }
 
+  depth(value) {
+    const targetNode = this.find(value)
+    if (!targetNode) {return null}
+    return this.#depthHelper(targetNode, this.root)
+  }
+
+  #depthHelper(targetNode, currentNode) {
+    if (!currentNode) {return -1}
+    if (currentNode === targetNode) {return 0}
+    const depthLeft = this.#depthHelper(targetNode, currentNode.left)
+    const depthRight = this.#depthHelper(targetNode, currentNode.right)
+    
+    if (depthLeft === -1 && depthRight === -1) {return -1}
+    
+    return 1 + Math.max(depthLeft, depthRight)
+  }
+
   findMin(root) {
     if (root === null) {return root}
     if (root.left) {root = this.findMin(root.left)}
@@ -186,4 +203,4 @@ let tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 
 tree.print();
 // tree.preOrderForEach((node) => console.log(node.data))
-console.log(tree.height(1));
+console.log(tree.depth(1));
